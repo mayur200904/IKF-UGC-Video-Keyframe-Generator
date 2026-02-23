@@ -77,8 +77,6 @@ export class PostgresStore {
           SET
             name = EXCLUDED.name,
             short_description = EXCLUDED.short_description,
-            image_url = EXCLUDED.image_url,
-            reference_image_url = EXCLUDED.reference_image_url,
             is_default = TRUE,
             updated_at = NOW()
         `,
