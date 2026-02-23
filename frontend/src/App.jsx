@@ -1,8 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4000";
 const PROJECT_STORAGE_KEY = "ugc_frontend_project_id";
 const TERMINAL_JOB_STATUSES = new Set(["completed", "failed", "needs_review"]);
+
+function resolveMediaUrl(url) {
+  if (!url) {
+    return "";
+  }
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+  return `${API_BASE_URL}${url}`;
+}
 
 const initialFormState = {
   actorId: "",
@@ -104,7 +114,7 @@ function ActorCard({ actor, selected, onSelect }) {
       <div className="actor-thumb-wrap">
         {!imageError ? (
           <img
-            src={`${API_BASE_URL}${actor.image_url}`}
+            src={resolveMediaUrl(actor.image_url)}
             alt={actor.name}
             className="actor-thumb"
             loading="lazy"
@@ -143,6 +153,8 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
   const [copiedOptionId, setCopiedOptionId] = useState("");
+  const [actorPopup, setActorPopup] = useState({ type: "", message: "" });
+  const actorPopupTimerRef = useRef(null);
 
   const hasPromptOptions = promptOptions.length > 0;
   const hasKeyframes = keyframes.length > 0;
@@ -160,6 +172,25 @@ export default function App() {
     }
     return "";
   }, [busyAction, keyframeJob, promptJob]);
+
+  const showActorPopup = useCallback((type, message) => {
+    if (actorPopupTimerRef.current) {
+      clearTimeout(actorPopupTimerRef.current);
+    }
+    setActorPopup({ type, message });
+    actorPopupTimerRef.current = setTimeout(() => {
+      setActorPopup({ type: "", message: "" });
+      actorPopupTimerRef.current = null;
+    }, 3200);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (actorPopupTimerRef.current) {
+        clearTimeout(actorPopupTimerRef.current);
+      }
+    };
+  }, []);
 
   const syncProjectState = useCallback((nextProject, hydrateDraft = false) => {
     setProject(nextProject);
@@ -523,6 +554,8 @@ export default function App() {
   const [newActorDesc, setNewActorDesc] = useState("");
   const [newActorFace, setNewActorFace] = useState(null);
   const [newActorRef, setNewActorRef] = useState(null);
+  const newActorFaceInputRef = useRef(null);
+  const newActorRefInputRef = useRef(null);
 
   const handleOpenHistory = async () => {
     setHistoryOpen(true);
@@ -580,7 +613,10 @@ export default function App() {
       setCreateActorError("Description must be at least 5 characters.");
       return;
     }
-    if (!newActorFace) {
+    const faceFile = newActorFace ?? newActorFaceInputRef.current?.files?.[0] ?? null;
+    const refFile = newActorRef ?? newActorRefInputRef.current?.files?.[0] ?? null;
+
+    if (!faceFile) {
       setCreateActorError("Face image is required.");
       return;
     }
@@ -589,15 +625,21 @@ export default function App() {
       const fd = new FormData();
       fd.append("name", newActorName.trim());
       fd.append("description", newActorDesc.trim());
-      fd.append("face_image", newActorFace);
-      if (newActorRef) {
-        fd.append("reference_image", newActorRef);
+      fd.append("face_image", faceFile);
+      if (refFile) {
+        fd.append("reference_image", refFile);
       }
       await requestJson("/v1/actors", { method: "POST", body: fd });
       setNewActorName("");
       setNewActorDesc("");
       setNewActorFace(null);
       setNewActorRef(null);
+      if (newActorFaceInputRef.current) {
+        newActorFaceInputRef.current.value = "";
+      }
+      if (newActorRefInputRef.current) {
+        newActorRefInputRef.current.value = "";
+      }
       // refresh panel list
       const payload = await requestJson("/v1/actors");
       setActorsPanelList(normalizeArray(payload.actors));
@@ -614,8 +656,25 @@ export default function App() {
       await requestJson(`/v1/actors/${actorId}`, { method: "DELETE" });
       setActorsPanelList((prev) => prev.filter((a) => a.id !== actorId));
       await refreshRecentActors();
-    } catch {
-      setErrorMessage("Failed to delete actor.");
+      showActorPopup("success", "Actor deleted successfully.");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "actor_delete_failed";
+      if (message === "actor_in_use") {
+        showActorPopup(
+          "error",
+          "Actor cannot be deleted because it is used by one or more projects.",
+        );
+        return;
+      }
+      if (message === "cannot_delete_default_actor") {
+        showActorPopup("error", "Default actors cannot be deleted.");
+        return;
+      }
+      if (message === "actor_not_found") {
+        showActorPopup("error", "Actor not found.");
+        return;
+      }
+      showActorPopup("error", "Failed to delete actor.");
     }
   };
 
@@ -629,6 +688,19 @@ export default function App() {
       <div className="ambient ambient-a" />
       <div className="ambient ambient-b" />
 
+      {actorPopup.message ? (
+        <div className={`actor-popup ${actorPopup.type === "success" ? "success" : "error"}`}>
+          <span>{actorPopup.message}</span>
+          <button
+            type="button"
+            className="ghost-btn"
+            onClick={() => setActorPopup({ type: "", message: "" })}
+          >
+            Close
+          </button>
+        </div>
+      ) : null}
+
       <header className="topbar">
         <div>
           <p className="eyebrow">UGC Prompt Studio</p>
@@ -639,7 +711,6 @@ export default function App() {
         </div>
 
         <div className="project-meta">
-          <span className="meta-chip">API: {API_BASE_URL}</span>
           {projectId ? <span className="meta-chip">Project: {projectId.slice(0, 8)}...</span> : null}
           <button type="button" className="ghost-btn" onClick={handleOpenActorsPanel}>
             View Actors
@@ -735,17 +806,31 @@ export default function App() {
                 <label>
                   Face Image *
                   <input
+                    ref={newActorFaceInputRef}
                     type="file"
                     accept="image/png,image/jpeg,image/webp"
-                    onChange={(e) => setNewActorFace(e.target.files?.[0] ?? null)}
+                    onClick={(e) => {
+                      e.currentTarget.value = "";
+                    }}
+                    onChange={(e) => {
+                      setNewActorFace(e.target.files?.[0] ?? null);
+                      setCreateActorError("");
+                    }}
                   />
                 </label>
                 <label>
                   Reference Image (optional)
                   <input
+                    ref={newActorRefInputRef}
                     type="file"
                     accept="image/png,image/jpeg,image/webp"
-                    onChange={(e) => setNewActorRef(e.target.files?.[0] ?? null)}
+                    onClick={(e) => {
+                      e.currentTarget.value = "";
+                    }}
+                    onChange={(e) => {
+                      setNewActorRef(e.target.files?.[0] ?? null);
+                      setCreateActorError("");
+                    }}
                   />
                 </label>
                 <button
@@ -772,7 +857,7 @@ export default function App() {
                   <div key={a.id} className={`actors-panel-item ${form.actorId === a.id ? "active" : ""}`}>
                     <div className="actors-panel-thumb">
                       <img
-                        src={`${API_BASE_URL}${a.image_url}`}
+                        src={resolveMediaUrl(a.image_url)}
                         alt={a.name}
                         onError={(e) => { e.target.style.display = "none"; }}
                       />

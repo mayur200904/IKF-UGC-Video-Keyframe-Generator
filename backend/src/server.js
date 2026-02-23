@@ -10,6 +10,7 @@ import { config } from "./config.js";
 import { createStore } from "./store/index.js";
 import { JOB_TYPES, JobRunner } from "./jobs.js";
 import { GeminiProvider } from "./providers/geminiProvider.js";
+import { SupabaseMediaStore, isSupabaseUri } from "./media/supabaseMediaStore.js";
 
 const ALLOWED_UPLOAD_MIME_TYPES = new Set(["image/png", "image/jpeg", "image/webp"]);
 
@@ -130,6 +131,7 @@ function parseOr400(schema, body, res) {
 
 async function startServer() {
   const app = express();
+  const mediaStore = SupabaseMediaStore.fromConfig(config);
 
   const store = await createStore({
     dataDir: config.dataDir,
@@ -145,6 +147,8 @@ async function startServer() {
     apiKey: config.geminiApiKey,
     textModel: config.geminiTextModel,
     imageModel: config.geminiImageModel,
+    mediaStore,
+    storageDir: config.storageDir,
   });
 
   const jobs = new JobRunner({
@@ -262,13 +266,23 @@ async function startServer() {
         }
 
         const actorId = `actor_${randomUUID().replace(/-/g, "").slice(0, 12)}`;
-        const actorsDir = path.join(config.storageDir, "actors");
-        fs.mkdirSync(actorsDir, { recursive: true });
 
         const faceName = `${actorId}${faceType.extension}`;
-        const faceDest = path.join(actorsDir, faceName);
-        fs.renameSync(faceFile.path, faceDest);
-        const faceUrl = `/storage/actors/${faceName}`;
+        let faceUrl = `/storage/actors/${faceName}`;
+        if (mediaStore) {
+          const uploadedFace = await mediaStore.uploadFile({
+            filePath: faceFile.path,
+            objectPath: `actors/${faceName}`,
+            contentType: faceType.mime,
+          });
+          fs.rmSync(faceFile.path, { force: true });
+          faceUrl = uploadedFace.publicUrl ?? faceUrl;
+        } else {
+          const actorsDir = path.join(config.storageDir, "actors");
+          fs.mkdirSync(actorsDir, { recursive: true });
+          const faceDest = path.join(actorsDir, faceName);
+          fs.renameSync(faceFile.path, faceDest);
+        }
 
         let refUrl = null;
         const refFile = req.files?.reference_image?.[0];
@@ -278,9 +292,21 @@ async function startServer() {
             fs.rmSync(refFile.path, { force: true });
           } else {
             const refName = `${actorId}_reference${refType.extension}`;
-            const refDest = path.join(actorsDir, refName);
-            fs.renameSync(refFile.path, refDest);
-            refUrl = `/storage/actors/${refName}`;
+            if (mediaStore) {
+              const uploadedRef = await mediaStore.uploadFile({
+                filePath: refFile.path,
+                objectPath: `actors/${refName}`,
+                contentType: refType.mime,
+              });
+              fs.rmSync(refFile.path, { force: true });
+              refUrl = uploadedRef.publicUrl;
+            } else {
+              const actorsDir = path.join(config.storageDir, "actors");
+              fs.mkdirSync(actorsDir, { recursive: true });
+              const refDest = path.join(actorsDir, refName);
+              fs.renameSync(refFile.path, refDest);
+              refUrl = `/storage/actors/${refName}`;
+            }
           }
         }
 
@@ -300,13 +326,35 @@ async function startServer() {
 
   app.delete("/v1/actors/:actorId", async (req, res, next) => {
     try {
-      const deleted = await store.deleteActor(req.params.actorId);
+      const actorId = req.params.actorId;
+      const actor = await store.getActor(actorId);
+      if (!actor) {
+        res.status(404).json({ error: "actor_not_found" });
+        return;
+      }
+      if (actor.is_default) {
+        res.status(400).json({ error: "cannot_delete_default_actor" });
+        return;
+      }
+
+      const projects = await store.listProjects();
+      const actorInUse = projects.some((project) => project.actor_id === actorId);
+      if (actorInUse) {
+        res.status(400).json({ error: "actor_in_use" });
+        return;
+      }
+
+      const deleted = await store.deleteActor(actorId);
       if (!deleted) {
         res.status(400).json({ error: "cannot_delete_actor" });
         return;
       }
       res.json({ deleted: true });
     } catch (error) {
+      if (error && typeof error === "object" && error.code === "23503") {
+        res.status(400).json({ error: "actor_in_use" });
+        return;
+      }
       next(error);
     }
   });
@@ -425,13 +473,25 @@ async function startServer() {
 
         const extension = detectedType.extension;
         const fileName = `product${extension}`;
-        const projectDir = path.join(config.uploadsDir, project.id);
-        fs.mkdirSync(projectDir, { recursive: true });
-        const nextPath = path.join(projectDir, fileName);
-        fs.renameSync(req.file.path, nextPath);
-
-        const relativePath = path.relative(config.storageDir, nextPath).split(path.sep).join("/");
-        const imageUrl = `${config.baseUrl}/storage/${relativePath}`;
+        let nextPath = "";
+        let imageUrl = "";
+        if (mediaStore) {
+          const uploaded = await mediaStore.uploadFile({
+            filePath: req.file.path,
+            objectPath: `uploads/${project.id}/${fileName}`,
+            contentType: detectedType.mime,
+          });
+          fs.rmSync(req.file.path, { force: true });
+          nextPath = uploaded.uri;
+          imageUrl = uploaded.publicUrl;
+        } else {
+          const projectDir = path.join(config.uploadsDir, project.id);
+          fs.mkdirSync(projectDir, { recursive: true });
+          nextPath = path.join(projectDir, fileName);
+          fs.renameSync(req.file.path, nextPath);
+          const relativePath = path.relative(config.storageDir, nextPath).split(path.sep).join("/");
+          imageUrl = `${config.baseUrl}/storage/${relativePath}`;
+        }
 
         const updated = await store.updateProject(project.id, (state) => ({
           ...state,
@@ -679,11 +739,26 @@ async function startServer() {
       });
 
       for (const frame of project.keyframes) {
-        if (frame.frame_path && fs.existsSync(frame.frame_path)) {
+        if (frame.frame_path && !isSupabaseUri(frame.frame_path) && fs.existsSync(frame.frame_path)) {
           const extension = path.extname(frame.frame_path) || ".png";
-          archive.file(frame.frame_path, {
-            name: `keyframes/frame_scene_${frame.scene_id}${extension}`,
-          });
+          archive.file(frame.frame_path, { name: `keyframes/frame_scene_${frame.scene_id}${extension}` });
+          continue;
+        }
+
+        if (frame.frame_path && isSupabaseUri(frame.frame_path) && mediaStore) {
+          const buffer = await mediaStore.downloadBufferByUri(frame.frame_path);
+          const extension = path.extname(frame.frame_url || frame.frame_path) || ".png";
+          archive.append(buffer, { name: `keyframes/frame_scene_${frame.scene_id}${extension}` });
+          continue;
+        }
+
+        if (frame.frame_url && /^https?:\/\//i.test(frame.frame_url)) {
+          const response = await fetch(frame.frame_url);
+          if (response.ok) {
+            const buffer = Buffer.from(await response.arrayBuffer());
+            const extension = path.extname(new URL(frame.frame_url).pathname) || ".png";
+            archive.append(buffer, { name: `keyframes/frame_scene_${frame.scene_id}${extension}` });
+          }
         }
       }
 

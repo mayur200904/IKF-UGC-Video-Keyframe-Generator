@@ -70,6 +70,37 @@ body {
   z-index: 1;
 }
 
+.actor-popup {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 90;
+  max-width: min(480px, calc(100vw - 2rem));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 0.7rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.actor-popup.success {
+  border-color: color-mix(in oklab, var(--brand) 36%, var(--border));
+  background: #ecfdf5;
+}
+
+.actor-popup.error {
+  border-color: color-mix(in oklab, var(--danger) 36%, var(--border));
+  background: #fef2f2;
+}
+
+.actor-popup span {
+  font-size: 0.88rem;
+}
+
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -637,7 +668,7 @@ textarea:focus {
 /* ── Actors Panel ── */
 
 .actors-panel {
-  width: min(480px, 92vw);
+  width: min(520px, 96vw);
 }
 
 .create-actor-section h3 {
@@ -667,7 +698,8 @@ textarea:focus {
 }
 
 .actors-panel-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.7rem;
   border: 1px solid var(--border);
@@ -738,6 +770,11 @@ textarea:focus {
   display: flex;
   gap: 0.35rem;
   flex-shrink: 0;
+  align-items: center;
+}
+
+.actors-panel-actions .primary-btn {
+  min-width: 64px;
 }
 
 .danger-text {
@@ -754,4 +791,22 @@ textarea:focus {
   padding: 0;
   text-decoration: underline;
   font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .actors-panel-item {
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .actors-panel-desc {
+    white-space: normal;
+  }
+
+  .actors-panel-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+    padding-left: calc(48px + 0.7rem);
+    margin-top: 0.2rem;
+  }
 }

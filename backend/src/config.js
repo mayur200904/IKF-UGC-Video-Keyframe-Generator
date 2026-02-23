@@ -32,4 +32,7 @@ export const config = {
   geminiTextModel: process.env.GEMINI_TEXT_MODEL ?? "gemini-2.5-flash",
   geminiImageModel: process.env.GEMINI_IMAGE_MODEL ?? "gemini-2.5-flash-image",
   allowMockFallback: parseBool(process.env.ALLOW_MOCK_FALLBACK, false),
+  supabaseUrl: process.env.SUPABASE_URL ?? "",
+  supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+  supabaseStorageBucket: process.env.SUPABASE_STORAGE_BUCKET ?? "",
 };
