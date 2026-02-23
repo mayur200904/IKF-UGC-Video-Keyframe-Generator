@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
+import { isSupabaseUri } from "../media/supabaseMediaStore.js";
 
 const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta";
 
@@ -311,11 +312,13 @@ function buildFallbackContinuityProfile({ actor, project, productName }) {
 }
 
 export class GeminiProvider {
-  constructor({ apiKey, textModel, imageModel, apiBase = GEMINI_API_BASE }) {
+  constructor({ apiKey, textModel, imageModel, apiBase = GEMINI_API_BASE, mediaStore = null, storageDir = "" }) {
     this.apiKey = apiKey;
     this.textModel = textModel;
     this.imageModel = imageModel;
     this.apiBase = apiBase;
+    this.mediaStore = mediaStore;
+    this.storageDir = storageDir;
   }
 
   isEnabled() {
@@ -446,9 +449,26 @@ Return this schema:
   async generatePromptOptions({ project, actor, scenePlan }) {
     const instruction = buildPromptOptionsInstruction({ project, actor, scenePlan });
     const parts = [{ text: instruction }];
+    let productBase64 = null;
+    let productMime = "image/png";
     if (project.product_image_path && fs.existsSync(project.product_image_path)) {
-      const productMime = mimeTypeFromPath(project.product_image_path);
-      const productBase64 = fs.readFileSync(project.product_image_path).toString("base64");
+      productMime = mimeTypeFromPath(project.product_image_path);
+      productBase64 = fs.readFileSync(project.product_image_path).toString("base64");
+    } else if (project.product_image_path && isSupabaseUri(project.product_image_path) && this.mediaStore) {
+      productBase64 = await this.mediaStore.readAsBase64({ pathOrUrl: project.product_image_path });
+      if (project.product_image_url) {
+        productMime = mimeTypeFromPath(project.product_image_url);
+      }
+    } else if (project.product_image_url) {
+      const response = await fetch(project.product_image_url);
+      if (response.ok) {
+        const buffer = Buffer.from(await response.arrayBuffer());
+        productBase64 = buffer.toString("base64");
+        productMime = mimeTypeFromPath(project.product_image_url);
+      }
+    }
+
+    if (productBase64) {
       parts.push({
         text: "Product reference image: infer product form-factor from this image and align dialogue/actions.",
       });
@@ -496,13 +516,32 @@ Return this schema:
     projectId,
     baseUrl,
   }) {
-    if (!project.product_image_path || !fs.existsSync(project.product_image_path)) {
+    if (!project.product_image_path && !project.product_image_url) {
       throw new Error("Product image is missing for keyframe generation");
     }
 
-    const productData = fs.readFileSync(project.product_image_path);
-    const productMime = mimeTypeFromPath(project.product_image_path);
-    const productBase64 = productData.toString("base64");
+    let productBase64 = null;
+    let productMime = "image/png";
+    if (project.product_image_path && fs.existsSync(project.product_image_path)) {
+      const productData = fs.readFileSync(project.product_image_path);
+      productMime = mimeTypeFromPath(project.product_image_path);
+      productBase64 = productData.toString("base64");
+    } else if (project.product_image_path && isSupabaseUri(project.product_image_path) && this.mediaStore) {
+      productBase64 = await this.mediaStore.readAsBase64({ pathOrUrl: project.product_image_path });
+      productMime = mimeTypeFromPath(project.product_image_url || project.product_image_path);
+    } else if (project.product_image_url) {
+      const response = await fetch(project.product_image_url);
+      if (response.ok) {
+        const buffer = Buffer.from(await response.arrayBuffer());
+        productBase64 = buffer.toString("base64");
+        productMime = mimeTypeFromPath(project.product_image_url);
+      }
+    }
+
+    if (!productBase64) {
+      throw new Error("Product image is missing for keyframe generation");
+    }
+
     const productName = project.brief?.product_name ?? "product";
     const projectFrameDir = path.join(keyframesDir, projectId);
     fs.mkdirSync(projectFrameDir, { recursive: true });
@@ -510,12 +549,21 @@ Return this schema:
     // Load actor reference image if available
     let actorRefBase64 = null;
     let actorRefMime = null;
-    if (actor?.reference_image_url && storageDir) {
-      const refRelPath = actor.reference_image_url.replace(/^\/storage\//, "");
-      const refAbsPath = path.join(storageDir, refRelPath);
-      if (fs.existsSync(refAbsPath)) {
-        actorRefBase64 = fs.readFileSync(refAbsPath).toString("base64");
-        actorRefMime = mimeTypeFromPath(refAbsPath);
+    if (actor?.reference_image_url) {
+      if (/^https?:\/\//i.test(actor.reference_image_url)) {
+        const response = await fetch(actor.reference_image_url);
+        if (response.ok) {
+          const buffer = Buffer.from(await response.arrayBuffer());
+          actorRefBase64 = buffer.toString("base64");
+          actorRefMime = mimeTypeFromPath(actor.reference_image_url);
+        }
+      } else if (storageDir) {
+        const refRelPath = actor.reference_image_url.replace(/^\/storage\//, "");
+        const refAbsPath = path.join(storageDir, refRelPath);
+        if (fs.existsSync(refAbsPath)) {
+          actorRefBase64 = fs.readFileSync(refAbsPath).toString("base64");
+          actorRefMime = mimeTypeFromPath(refAbsPath);
+        }
       }
     }
 
@@ -598,7 +646,28 @@ Return this schema:
       const extension = extFromMime(image.mimeType);
       const fileName = `frame_scene_${frame.scene_id}.${extension}`;
       const absolutePath = path.join(projectFrameDir, fileName);
-      fs.writeFileSync(absolutePath, Buffer.from(image.data, "base64"));
+      const imageBuffer = Buffer.from(image.data, "base64");
+
+      if (this.mediaStore) {
+        const objectPath = `keyframes/${projectId}/${fileName}`;
+        return this.mediaStore
+          .uploadBuffer({
+            objectPath,
+            buffer: imageBuffer,
+            contentType: image.mimeType || "image/png",
+          })
+          .then((uploaded) => ({
+            scene_id: frame.scene_id,
+            frame_prompt_json: frame.frame_prompt_json,
+            frame_path: uploaded.uri,
+            frame_url: uploaded.publicUrl,
+            source_model: this.imageModel,
+            used_product_image_reference: true,
+            continuity_score: anchorUsed ? 70 : 75,
+          }));
+      }
+
+      fs.writeFileSync(absolutePath, imageBuffer);
 
       return {
         scene_id: frame.scene_id,
@@ -627,8 +696,9 @@ Return this schema:
         return frameToResult({ frame, image, anchorUsed: true });
       }),
     );
-    const anchorResult = frameToResult({ frame: firstScene, image: anchorImage, anchorUsed: false });
-    const allResults = [anchorResult, ...remainingResults].sort((a, b) => a.scene_id - b.scene_id);
+    const anchorResult = await frameToResult({ frame: firstScene, image: anchorImage, anchorUsed: false });
+    const resolvedRemaining = await Promise.all(remainingResults);
+    const allResults = [anchorResult, ...resolvedRemaining].sort((a, b) => a.scene_id - b.scene_id);
 
     return {
       keyframes: allResults,
