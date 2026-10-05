@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#12308c" />
+    <meta
+      name="description"
+      content="HiveMinds-inspired AI UGC campaign studio wireframe"
+    />
+    <title>Hiveminds Studio — AI UGC Campaign Wireframe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell" id="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+        <div class="brand-lockup">
+          <a href="#dashboard" class="brand" data-route="dashboard" aria-label="Hiveminds Studio home">
+            <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span>hiveminds<span class="brand-dot">.</span></span>
+          </a>
+          <button class="icon-button sidebar-close" type="button" data-sidebar-close aria-label="Close navigation">×</button>
+        </div>
+
+        <div class="workspace-switcher">
+          <div class="avatar avatar-blue">M</div>
+          <div class="workspace-copy">
+            <span class="eyebrow">Workspace</span>
+            <strong>Mayur's Growth Lab</strong>
+          </div>
+          <span class="chevron" aria-hidden="true">⌄</span>
+        </div>
+
+        <nav class="nav-group" aria-label="Workspace">
+          <p class="nav-label">Workspace</p>
+          <a class="nav-link active" href="#dashboard" data-route="dashboard"><span class="nav-icon">⌂</span> Overview</a>
+          <a class="nav-link" href="#campaigns" data-route="campaigns"><span class="nav-icon">◫</span> Campaigns <span class="nav-count">4</span></a>
+          <a class="nav-link" href="#products" data-route="products"><span class="nav-icon">▣</span> Products</a>
+          <a class="nav-link" href="#creators" data-route="creators"><span class="nav-icon">◉</span> AI creators</a>
+          <a class="nav-link" href="#assets" data-route="assets"><span class="nav-icon">▧</span> Asset library</a>
+        </nav>
+
+        <nav class="nav-group" aria-label="Account">
+          <p class="nav-label">Manage</p>
+          <a class="nav-link" href="#subscription" data-route="subscription"><span class="nav-icon">◇</span> Subscription <span class="nav-dot"></span></a>
+          <a class="nav-link" href="#settings" data-route="settings"><span class="nav-icon">⚙</span> Settings</a>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+
+        <div class="sidebar-help">
+          <span class="help-orbit" aria-hidden="true">?</span>
+          <strong>Need a hand?</strong>
+          <span>Talk to our growth team</span>
+          <button class="text-button" type="button" data-toast="We'll connect you with the growth team.">Get support <span aria-hidden="true">↗</span></button>
+        </div>
+
+        <div class="profile-row">
+          <div class="avatar avatar-yellow">MS</div>
+          <div class="profile-copy"><strong>Mayur Santoshtarate</strong><span>Owner</span></div>
+          <button class="icon-button" type="button" aria-label="Open profile menu">•••</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="icon-button mobile-menu" type="button" data-sidebar-open aria-label="Open navigation">☰</button>
+          <div class="breadcrumbs" id="breadcrumbs"><span>Workspace</span><span aria-hidden="true">/</span><strong>Overview</strong></div>
+          <div class="topbar-actions">
+            <button class="icon-button notification-button" type="button" aria-label="Notifications" data-toast="You're all caught up."><span>♧</span><i></i></button>
+            <button class="avatar avatar-yellow topbar-avatar" type="button" aria-label="Open profile menu">MS</button>
+          </div>
+        </header>
+
+        <div class="page-wrap">
+          <section class="view-section active" data-view-section="dashboard" aria-labelledby="dashboard-heading">
+            <div class="page-heading heading-with-action">
+              <div>
+                <p class="kicker">Monday, 5 October 2026 <span class="status-pip"></span> All systems operational</p>
+                <h1 id="dashboard-heading">Turn potential into <span class="highlight-text">performance.</span></h1>
+                <p class="heading-copy">Build high-performing UGC campaigns for every channel, language, and audience.</p>
+              </div>
+              <button class="button button-primary button-large" type="button" data-route="new-campaign"><span class="button-plus">+</span> New campaign</button>
+            </div>
+
+            <div class="metric-grid" aria-label="Workspace performance metrics">
+              <article class="metric-card metric-blue">
+                <div class="metric-top"><span class="metric-icon">◫</span><span class="metric-trend">↑ 18.4%</span></div>
+                <span class="metric-value">24</span><span class="metric-label">Total campaigns</span>
+                <div class="metric-spark spark-blue" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              </article>
+              <article class="metric-card metric-yellow">
+                <div class="metric-top"><span class="metric-icon">✦</span><span class="metric-trend">↑ 32.8%</span></div>
+                <span class="metric-value">86</span><span class="metric-label">Videos generated</span>
+                <div class="metric-spark spark-yellow" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              </article>
+              <article class="metric-card metric-lilac">
+                <div class="metric-top"><span class="metric-icon">◈</span><span class="metric-trend">38 / 60 used</span></div>
+                <span class="metric-value">63<span class="metric-unit">%</span></span><span class="metric-label">Monthly credits used</span>
+                <div class="mini-progress"><span style="width: 63%"></span></div>
+              </article>
+              <article class="metric-card metric-white">
+                <div class="metric-top"><span class="metric-icon">◎</span><span class="metric-trend neutral">This month</span></div>
+                <span class="metric-value">4.8<span class="metric-unit">/5</span></span><span class="metric-label">Creative quality score</span>
+                <div class="quality-stars" aria-label="4.8 out of 5 stars">★★★★★</div>
+              </article>
+            </div>
+
+            <div class="dashboard-grid">
+              <section class="panel campaigns-panel" aria-labelledby="campaigns-heading">
+                <div class="panel-header">
+                  <div><p class="section-kicker">Your creative engine</p><h2 id="campaigns-heading">Recent campaigns</h2></div>
+                  <div class="panel-actions"><button class="button button-ghost" type="button" data-route="campaigns">View all <span aria-hidden="true">↗</span></button></div>
+                </div>
+                <div class="campaign-toolbar">
+                  <label class="search-field"><span aria-hidden="true">⌕</span><input id="campaign-search" type="search" placeholder="Search campaigns" aria-label="Search campaigns" /></label>
+                  <select id="campaign-filter" class="select-control" aria-label="Filter campaigns">
+                    <option value="all">All statuses</option><option value="ready">Ready</option><option value="review">Needs review</option><option value="draft">Draft</option><option value="generating">Generating</option>
+                  </select>
+                </div>
+                <div class="campaign-list" id="campaign-list"></div>
+                <div class="empty-state" id="campaign-empty" hidden><span class="empty-icon">⌕</span><strong>No campaigns found</strong><span>Try a different search or status filter.</span></div>
+              </section>
+
+              <aside class="dashboard-side-column">
+                <section class="panel plan-panel" aria-labelledby="plan-heading">
+                  <div class="plan-pattern" aria-hidden="true"><span></span><span></span><span></span></div>
+                  <div class="plan-header"><div><p class="section-kicker">Your plan</p><h2 id="plan-heading">Growth</h2></div><span class="plan-badge">Active</span></div>
+                  <p class="plan-price">₹17,000 <span>/ month</span></p>
+                  <div class="plan-usage"><div><span>Credits used</span><strong>38 <small>/ 60</small></strong></div><div class="usage-track"><span style="width: 63%"></span></div><p>Renews on 18 October 2026</p></div>
+                  <button class="button button-dark full-width" type="button" data-dialog="upgrade-dialog">Manage subscription <span aria-hidden="true">→</span></button>
+                </section>
+
+                <section class="panel quick-panel" aria-labelledby="quick-heading">
+                  <div class="panel-header"><div><p class="section-kicker">Keep building</p><h2 id="quick-heading">Quick actions</h2></div></div>
+                  <button class="quick-action" type="button" data-route="new-campaign"><span class="quick-action-icon icon-blue">+</span><span><strong>Start a campaign</strong><small>From brief to storyboard</small></span><span class="arrow">→</span></button>
+                  <button class="quick-action" type="button" data-dialog="product-dialog"><span class="quick-action-icon icon-yellow">▣</span><span><strong>Add a product</strong><small>Build your product library</small></span><span class="arrow">→</span></button>
+                  <button class="quick-action" type="button" data-dialog="actor-dialog"><span class="quick-action-icon icon-lilac">◉</span><span><strong>Browse AI creators</strong><small>Find your next on-screen face</small></span><span class="arrow">→</span></button>
+                </section>
+              </aside>
+            </div>
+
+            <section class="panel insight-panel" aria-labelledby="insight-heading">
+              <div class="insight-graphic" aria-hidden="true"><span class="hex hex-a"></span><span class="hex hex-b"></span><span class="hex hex-c"></span><span class="insight-line"></span></div>
+              <div class="insight-copy"><p class="section-kicker">A little nudge from your data</p><h2 id="insight-heading">Your Hindi concepts are getting more attention.</h2><p>Campaigns with Indian-language voiceovers are averaging <strong>23% more completed views</strong> in your current creative set.</p><button class="text-button" type="button" data-route="campaigns">Explore campaign insights <span aria-hidden="true">→</span></button></div>
+              <div class="insight-stat"><span>+23%</span><small>completed views</small><div class="bar-chart" aria-hidden="true"><i style="height: 36%"></i><i style="height: 52%"></i><i style="height: 44%"></i><i style="height: 70%"></i><i style="height: 64%"></i><i style="height: 92%"></i></div></div>
+            </section>
+          </section>
+
+          <section class="view-section" data-view-section="campaigns" aria-labelledby="all-campaigns-heading">
+            <div class="page-heading heading-with-action"><div><p class="kicker">Creative workspace <span class="status-pip"></span> 24 total campaigns</p><h1 id="all-campaigns-heading">All campaigns.</h1><p class="heading-copy">Every brief, concept, storyboard, and export in one place.</p></div><button class="button button-primary button-large" type="button" data-route="new-campaign"><span class="button-plus">+</span> New campaign</button></div>
+            <div class="filter-tabs" role="tablist" aria-label="Campaign status"><button class="filter-tab active" type="button" data-campaign-tab="all">All <span>24</span></button><button class="filter-tab" type="button" data-campaign-tab="ready">Ready <span>12</span></button><button class="filter-tab" type="button" data-campaign-tab="review">Needs review <span>4</span></button><button class="filter-tab" type="button" data-campaign-tab="draft">Drafts <span>8</span></button></div>
+            <div class="all-campaigns-grid" id="all-campaigns-grid"></div>
+          </section>
+
+          <section class="view-section" data-view-section="new-campaign" aria-labelledby="wizard-heading">
+            <div class="wizard-header">
+              <div><p class="kicker">New campaign <span class="status-pip"></span> <span id="save-status">Draft saved just now</span></p><h1 id="wizard-heading">Build your next <span class="highlight-text">hit.</span></h1></div>
+              <div class="wizard-header-actions"><button class="button button-ghost" type="button" data-route="dashboard">Save & exit</button><button class="icon-button" type="button" data-toast="Help is on the way.">?</button></div>
+            </div>
+            <div class="wizard-stepper" role="navigation" aria-label="Campaign steps">
+              <button class="stepper-item active" type="button" data-go-step="1"><span class="step-number">1</span><span class="step-label">Campaign</span></button><span class="stepper-line"></span>
+              <button class="stepper-item" type="button" data-go-step="2"><span class="step-number">2</span><span class="step-label">Product</span></button><span class="stepper-line"></span>
+              <button class="stepper-item" type="button" data-go-step="3"><span class="step-number">3</span><span class="step-label">Direction</span></button><span class="stepper-line"></span>
+              <button class="stepper-item" type="button" data-go-step="4"><span class="step-number">4</span><span class="step-label">AI creator</span></button><span class="stepper-line"></span>
+              <button class="stepper-item" type="button" data-go-step="5"><span class="step-number">5</span><span class="step-label">Concepts</span></button><span class="stepper-line"></span>
+              <button class="stepper-item" type="button" data-go-step="6"><span class="step-number">6</span><span class="step-label">Storyboard</span></button><span class="stepper-line"></span>
+              <button class="stepper-item" type="button" data-go-step="7"><span class="step-number">7</span><span class="step-label">Generate</span></button>
+            </div>
+
+            <div class="wizard-content">
+              <div class="wizard-step active" data-step="1">
+                <div class="step-intro"><p class="section-kicker">Step 1 of 7</p><h2>What are we making?</h2><p>Start with the campaign basics. We’ll use these to tailor every creative decision that follows.</p></div>
+                <form class="panel wizard-form" data-autosave-form>
+                  <div class="field-grid field-grid-wide"><label class="field field-span-2"><span>Campaign name <b>*</b></span><input type="text" value="Crompton Classic DLX — Diwali Refresh" /></label><label class="field"><span>Primary platform <b>*</b></span><select><option>Instagram Reels</option><option>YouTube Shorts</option><option>TikTok</option><option>Amazon</option></select></label><label class="field"><span>Objective <b>*</b></span><select><option>Product education</option><option>Awareness</option><option>Conversion</option></select></label></div>
+                  <fieldset class="choice-fieldset"><legend>Video duration</legend><p class="field-help">Short-form performs best when the idea gets to the point.</p><div class="choice-grid choice-grid-three"><label class="choice-card selected"><input type="radio" name="duration" checked /><span><strong>8–10 seconds</strong><small>Recommended for Reels</small></span><i>✓</i></label><label class="choice-card"><input type="radio" name="duration" /><span><strong>20 seconds</strong><small>More room for education</small></span></label><label class="choice-card"><input type="radio" name="duration" /><span><strong>30 seconds</strong><small>Full product story</small></span></label></div></fieldset>
+                  <fieldset class="choice-fieldset"><legend>Aspect ratio</legend><div class="choice-grid choice-grid-three"><label class="ratio-card selected"><input type="radio" name="ratio" checked /><span class="ratio-shape ratio-vertical"></span><span><strong>9:16 vertical</strong><small>1080 × 1920</small></span></label><label class="ratio-card"><input type="radio" name="ratio" /><span class="ratio-shape ratio-square"></span><span><strong>1:1 square</strong><small>1080 × 1080</small></span></label><label class="ratio-card"><input type="radio" name="ratio" /><span class="ratio-shape ratio-horizontal"></span><span><strong>16:9 landscape</strong><small>1920 × 1080</small></span></label></div></fieldset>
+                </form>
+              </div>
+
+              <div class="wizard-step" data-step="2">
+                <div class="step-intro"><p class="section-kicker">Step 2 of 7</p><h2>What should creators feature?</h2><p>Add a product from your library or introduce something new. Product details help the AI stay accurate.</p></div>
+                <div class="product-stage panel"><div class="selected-product-card"><div class="product-image product-crompton"><img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=700&q=85" alt="Crompton product placeholder" /></div><div class="product-card-copy"><div class="tag-row"><span class="badge badge-blue">Selected product</span><button class="text-button" type="button" data-dialog="product-dialog">Change</button></div><h3>Crompton Classic DLX</h3><p>High-performance ceiling fan with a premium metallic finish and powerful air delivery.</p><div class="product-facts"><span>₹3,499</span><span>4.7 ★</span><span>Home & living</span></div></div></div><button class="add-product-tile" type="button" data-dialog="product-dialog"><span class="add-product-icon">+</span><strong>Add another product</strong><small>Upload an image or paste a link</small></button></div>
+                <div class="panel product-details-panel"><div class="panel-header"><div><p class="section-kicker">Product truth</p><h3>Details the creator can say on camera</h3></div><span class="saved-label">✓ Saved to product library</span></div><div class="detail-chip-grid"><div><span>Key features</span><strong>Powerful air delivery · 3-speed control · Metallic finish</strong></div><div><span>Benefits</span><strong>Cooler rooms with less noise and lower energy use</strong></div><div><span>Call to action</span><strong>“Make every room feel better.”</strong></div></div></div>
+              </div>
+
+              <div class="wizard-step" data-step="3">
+                <div class="step-intro"><p class="section-kicker">Step 3 of 7</p><h2>Guide the creative direction.</h2><p>Give the creative team a clear north star. The more specific the direction, the more useful the first concepts.</p></div>
+                <div class="direction-grid"><section class="panel form-panel"><div class="panel-header"><div><p class="section-kicker">Creative brief</p><h3>What should this feel like?</h3></div><span class="required-pill">Required</span></div><label class="field"><span>Format</span><select><option>POV product experience</option><option>Authentic testimonial</option><option>Product demo</option><option>Unboxing</option><option>Problem → solution</option></select></label><label class="field"><span>Tone</span><select><option>Authentic and conversational</option><option>Energetic</option><option>Premium</option><option>Funny</option></select></label><label class="field"><span>Your vision</span><textarea rows="4">A warm, relatable creator shows how a better ceiling fan changes the feel of a home during the festive season. Make it feel like a real recommendation, not a scripted ad.</textarea></label></section><section class="panel form-panel"><div class="panel-header"><div><p class="section-kicker">Production rules</p><h3>Set the boundaries.</h3></div></div><div class="toggle-row"><div><strong>On-screen captions</strong><small>Keep the story accessible without sound.</small></div><label class="switch"><input type="checkbox" checked /><span></span></label></div><div class="toggle-row"><div><strong>Background music</strong><small>Light, modern, and non-distracting.</small></div><label class="switch"><input type="checkbox" checked /><span></span></label></div><div class="dos-donts"><div><span class="list-label label-do">✓ Dos</span><textarea rows="3">Show the product in a lived-in home. Mention power and quiet performance.</textarea></div><div><span class="list-label label-dont">× Don’ts</span><textarea rows="3">No unsupported savings claims. No fake customer testimonial language.</textarea></div></div><button class="button button-outline" type="button" data-dialog="references-dialog">＋ Add references <span class="ref-count">2</span></button></section></div>
+              </div>
+
+              <div class="wizard-step" data-step="4">
+                <div class="step-intro"><p class="section-kicker">Step 4 of 7</p><h2>Who should bring it to life?</h2><p>Choose a synthetic creator whose energy feels right for this audience and language.</p></div>
+                <div class="creator-selected panel"><div class="creator-portrait"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=85" alt="Aisha Mehta AI creator" /></div><div class="creator-copy"><div class="tag-row"><span class="badge badge-yellow">Selected AI creator</span><button class="text-button" type="button" data-dialog="actor-dialog">Change creator</button></div><h3>Aisha Mehta</h3><p>Warm, expressive, and confident on camera.</p><div class="creator-tags"><span>Female</span><span>25–34</span><span>Hindi + Indian English</span><span>Mumbai</span></div></div><div class="creator-score"><strong>4.9</strong><span>creative fit</span><div class="quality-stars">★★★★★</div></div></div>
+                <div class="preference-grid"><section class="panel form-panel"><div class="panel-header"><div><p class="section-kicker">Voice direction</p><h3>Language and accent</h3></div></div><label class="field"><span>Primary language</span><select><option>Hindi</option><option>Indian English</option><option>Marathi</option><option>Tamil</option><option>Telugu</option></select></label><label class="field"><span>Accent style</span><select><option>Natural Mumbai Hindi</option><option>Neutral Indian</option><option>Delhi Hindi</option><option>Conversational Hinglish</option></select></label></section><section class="panel form-panel"><div class="panel-header"><div><p class="section-kicker">Audience match</p><h3>Creator preferences</h3></div></div><div class="preference-chips"><button class="preference-chip active" type="button">Relatable</button><button class="preference-chip" type="button">Premium</button><button class="preference-chip active" type="button">Family-friendly</button><button class="preference-chip" type="button">High energy</button></div><label class="field"><span>Setting</span><select><option>Bright modern living room</option><option>Bedroom</option><option>Festive home</option><option>Studio neutral</option></select></label><button class="button button-outline" type="button" data-dialog="actor-dialog">＋ Browse all AI creators</button></section></div>
+              </div>
+
+              <div class="wizard-step" data-step="5">
+                <div class="step-intro"><p class="section-kicker">Step 5 of 7</p><h2>Pick the story that lands.</h2><p>We generated three directions from your brief. Choose one to take into storyboard, or tune the prompt and try again.</p></div>
+                <div class="concept-toolbar"><span class="badge badge-blue">3 concepts ready</span><span class="autosave-note"><span class="pulse-dot"></span> Generated from your brief · 12s ago</span><button class="button button-outline" type="button" data-action="regenerate-concepts">↻ Regenerate all</button></div>
+                <div class="concept-grid" id="concept-grid"></div>
+              </div>
+
+              <div class="wizard-step" data-step="6">
+                <div class="step-intro"><p class="section-kicker">Step 6 of 7</p><h2>Shape every frame.</h2><p>Review the four-scene storyboard before rendering. Regenerate a single scene without losing the rest of your creative.</p></div>
+                <div class="storyboard-toolbar"><div><span class="badge badge-yellow">Concept selected</span><strong>“The fan that changes the room”</strong></div><button class="button button-outline" type="button" data-action="regenerate-storyboard">↻ Regenerate storyboard</button></div>
+                <div class="storyboard-grid" id="storyboard-grid"></div>
+              </div>
+
+              <div class="wizard-step" data-step="7">
+                <div class="step-intro"><p class="section-kicker">Step 7 of 7</p><h2>Ready to make it real?</h2><p>Review the finishing details, then send your campaign to the generation queue.</p></div>
+                <div class="generate-grid"><section class="panel render-preview"><div class="preview-frame"><div class="preview-glow"></div><div class="preview-overlay"><span class="ai-label">AI GENERATED</span><span class="preview-play">▶</span><small>9:16 · 8–10 sec</small></div><div class="preview-person"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85" alt="AI creator preview" /></div><div class="preview-caption">“A room that feels this good<br />starts with the right fan.”</div></div><div class="preview-meta"><span><i class="status-pip"></i> Ready to generate</span><span>4 scenes · Hindi</span></div></section><section class="panel render-settings"><div class="panel-header"><div><p class="section-kicker">Export settings</p><h3>Polish the final cut.</h3></div><span class="required-pill">Required</span></div><div class="toggle-row"><div><strong>AI disclosure label</strong><small>Visible in the exported video.</small></div><label class="switch"><input type="checkbox" checked /><span></span></label></div><div class="toggle-row"><div><strong>Subtitles</strong><small>Hindi subtitles with safe-area placement.</small></div><label class="switch"><input type="checkbox" checked /><span></span></label></div><div class="toggle-row"><div><strong>Music</strong><small>Light festive beat under voiceover.</small></div><label class="switch"><input type="checkbox" checked /><span></span></label></div><label class="field"><span>Number of variations</span><select><option>3 variations · 3 credits</option><option>1 variation · 1 credit</option><option>5 variations · 5 credits</option></select></label><div class="export-warning"><span>◈</span><p><strong>3 credits will be used.</strong><br />You’ll have 19 credits left after this batch.</p></div><button class="button button-primary full-width button-large" type="button" data-action="generate-video">Generate 3 videos <span aria-hidden="true">→</span></button><p class="fine-print">By generating, you confirm the content follows your product claims and creator consent requirements.</p></section></div>
+                <div class="generation-result panel" id="generation-result" hidden><div class="result-icon">✓</div><div><p class="section-kicker">Generation complete</p><h3>Your videos are ready for review.</h3><p>3 variations were generated with AI disclosure and provenance metadata.</p></div><div class="result-actions"><button class="button button-outline" type="button" data-dialog="share-dialog">Share</button><button class="button button-dark" type="button" data-dialog="export-dialog">Download exports</button></div></div>
+              </div>
+            </div>
+            <div class="wizard-footer"><button class="button button-ghost" type="button" data-action="wizard-back">← Back</button><div><span class="wizard-page-indicator">Step <strong id="current-step-label">1</strong> of 7</span><button class="button button-primary" type="button" data-action="wizard-next">Continue <span aria-hidden="true">→</span></button></div></div>
+          </section>
+
+          <section class="view-section" data-view-section="campaign-detail" aria-labelledby="detail-heading">
+            <div class="detail-back"><button class="button button-ghost" type="button" data-route="campaigns">← All campaigns</button></div>
+            <div class="detail-heading heading-with-action"><div><p class="kicker" id="detail-status-line"><span class="status-pip"></span> Ready for review · Updated 18 min ago</p><h1 id="detail-heading">Crompton Classic DLX.</h1><p class="heading-copy" id="detail-heading-copy">Instagram Reels · Hindi · Product education · 3 generated variations</p></div><div class="detail-actions"><button class="button button-outline" type="button" data-dialog="share-dialog">Share</button><button class="button button-dark" type="button" data-route="new-campaign">Duplicate campaign</button></div></div>
+            <div class="detail-summary-grid"><div class="panel detail-media-card"><div class="detail-video-placeholder"><span class="ai-label">AI GENERATED</span><span class="preview-play">▶</span><div class="detail-product-pip"><img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=250&q=85" alt="Crompton product placeholder" /></div></div><div class="video-actions"><button class="button button-outline" type="button" data-dialog="export-dialog">↓ Download</button><button class="button button-ghost" type="button" data-toast="Campaign link copied to clipboard.">Copy link</button><span class="badge badge-yellow">Needs review</span></div></div><div class="panel detail-info-card"><div class="detail-stat-row"><div><span>Campaign objective</span><strong>Product education</strong></div><div><span>Output format</span><strong>9:16 · 8–10 sec</strong></div></div><div class="detail-stat-row"><div><span>Selected creator</span><strong>Aisha Mehta</strong></div><div><span>Voice direction</span><strong>Hindi · Mumbai</strong></div></div><div class="detail-stat-row"><div><span>Concept</span><strong>The fan that changes the room</strong></div><div><span>Credits used</span><strong>3 credits</strong></div></div><div class="detail-compliance"><span>✓</span><p><strong>Provenance attached</strong><br />AI disclosure, prompt version, and provider run are recorded.</p></div></div></div>
+            <div class="detail-tabs" role="tablist"><button class="detail-tab active" type="button">Overview</button><button class="detail-tab" type="button">Storyboard <span>4</span></button><button class="detail-tab" type="button">Activity <span>8</span></button><button class="detail-tab" type="button">Usage</button></div>
+            <div class="detail-lower-grid"><section class="panel detail-storyboard"><div class="panel-header"><div><p class="section-kicker">Storyboard</p><h2>Four scenes, one clear story.</h2></div><button class="button button-outline" type="button" data-route="new-campaign">Edit storyboard</button></div><div class="mini-scenes" id="mini-scenes"></div></section><aside class="panel activity-panel"><div class="panel-header"><div><p class="section-kicker">Campaign activity</p><h2>What’s happened</h2></div></div><div class="activity-list"><div><span class="activity-dot done"></span><p><strong>3 videos generated</strong><small>Today, 11:42 AM</small></p></div><div><span class="activity-dot"></span><p><strong>Storyboard approved</strong><small>Today, 11:18 AM</small></p></div><div><span class="activity-dot"></span><p><strong>Concept selected</strong><small>Today, 10:54 AM</small></p></div><div><span class="activity-dot"></span><p><strong>Draft created</strong><small>Yesterday, 4:28 PM</small></p></div></div></aside></div>
+          </section>
+
+          <section class="view-section" data-view-section="subscription" aria-labelledby="subscription-heading">
+            <div class="page-heading"><p class="kicker">Workspace billing <span class="status-pip"></span> Active</p><h1 id="subscription-heading">Make more room for <span class="highlight-text">growth.</span></h1><p class="heading-copy">Scale your creative output as fast as your audience grows.</p></div>
+            <div class="billing-overview"><section class="panel current-plan-large"><div class="plan-pattern" aria-hidden="true"><span></span><span></span><span></span></div><div class="plan-header"><div><p class="section-kicker">Current plan</p><h2>Growth</h2></div><span class="plan-badge">Active</span></div><p class="plan-price">₹17,000 <span>/ month</span></p><div class="billing-meter"><div><span>Monthly credits</span><strong>38 / 60</strong></div><div class="usage-track"><span style="width: 63%"></span></div><p>Renews on 18 October 2026 · 12 days remaining</p></div><button class="button button-dark" type="button" data-dialog="upgrade-dialog">Change plan</button></section><section class="panel credit-breakdown"><div class="panel-header"><div><p class="section-kicker">This billing cycle</p><h2>Usage breakdown</h2></div></div><div class="usage-row"><span class="usage-icon icon-blue">✦</span><div><strong>Video generations</strong><small>32 credits</small></div><b>84%</b><div class="usage-bar"><span style="width: 84%"></span></div></div><div class="usage-row"><span class="usage-icon icon-yellow">♬</span><div><strong>Voiceovers</strong><small>4 credits</small></div><b>11%</b><div class="usage-bar yellow"><span style="width: 11%"></span></div></div><div class="usage-row"><span class="usage-icon icon-lilac">↻</span><div><strong>Regenerations</strong><small>2 credits</small></div><b>5%</b><div class="usage-bar lilac"><span style="width: 5%"></span></div></div></section></div>
+            <section class="panel pricing-panel"><div class="panel-header"><div><p class="section-kicker">Plans that move with you</p><h2>Choose the right amount of momentum.</h2></div><span class="illustrative-label">Illustrative planning prices</span></div><div class="pricing-grid"><article class="price-card"><span class="price-tier">Starter</span><strong>₹9,000 <small>/ month</small></strong><p>25 video credits</p><button class="button button-outline full-width" type="button" data-dialog="upgrade-dialog">View plan</button></article><article class="price-card featured"><span class="popular-label">Most popular</span><span class="price-tier">Growth</span><strong>₹17,000 <small>/ month</small></strong><p>60 video credits</p><button class="button button-dark full-width" type="button" data-toast="You're already on the Growth plan.">Current plan</button></article><article class="price-card"><span class="price-tier">Pro</span><strong>₹24,000 <small>/ month</small></strong><p>90 video credits</p><button class="button button-outline full-width" type="button" data-dialog="upgrade-dialog">View plan</button></article><article class="price-card enterprise"><span class="price-tier">Enterprise</span><strong>Custom</strong><p>400+ videos · tailored support</p><button class="button button-outline full-width" type="button" data-toast="We'll connect you with an enterprise specialist.">Talk to us</button></article></div></section>
+          </section>
+
+          <section class="view-section simple-view" data-view-section="products" aria-labelledby="products-heading"><div class="page-heading heading-with-action"><div><p class="kicker">Reusable assets</p><h1 id="products-heading">Product library.</h1><p class="heading-copy">Keep product truth close to every campaign.</p></div><button class="button button-primary" type="button" data-dialog="product-dialog">+ Add product</button></div><div class="library-grid" id="product-library-grid"></div></section>
+          <section class="view-section simple-view" data-view-section="creators" aria-labelledby="creators-heading"><div class="page-heading heading-with-action"><div><p class="kicker">Synthetic talent</p><h1 id="creators-heading">AI creator library.</h1><p class="heading-copy">Find the right face, language, and energy for every brief.</p></div><button class="button button-primary" type="button" data-dialog="actor-dialog">+ Browse creators</button></div><div class="creator-library-grid" id="creator-library-grid"></div></section>
+          <section class="view-section simple-view" data-view-section="assets" aria-labelledby="assets-heading"><div class="page-heading"><p class="kicker">Campaign files</p><h1 id="assets-heading">Asset library.</h1><p class="heading-copy">Generated videos, keyframes, scripts, and provenance in one place.</p></div><div class="asset-dropzone"><span>＋</span><strong>Drop assets here</strong><p>This wireframe uses a fixture-only asset library. Connect Supabase Storage in the production app.</p></div></section>
+          <section class="view-section simple-view" data-view-section="settings" aria-labelledby="settings-heading"><div class="page-heading"><p class="kicker">Workspace preferences</p><h1 id="settings-heading">Settings.</h1><p class="heading-copy">Workspace ownership, notifications, and generation defaults.</p></div><div class="panel settings-placeholder"><span class="settings-glyph">⚙</span><h2>Settings are ready for the Next.js migration.</h2><p>This static wireframe keeps settings intentionally lightweight while the product architecture is migrated to workspace-owned records.</p><button class="button button-outline" type="button" data-reset-demo>Reset demo state</button></div></section>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+    <dialog class="modal-dialog" id="product-dialog" aria-labelledby="product-dialog-title">
+      <div class="dialog-header"><div><p class="section-kicker">Product library</p><h2 id="product-dialog-title">Add a product.</h2><p>Product details help the AI stay accurate and on-brand.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close add product dialog">×</button></div>
+      <div class="dialog-tabs" role="tablist"><button class="dialog-tab active" type="button" data-product-tab="upload">Upload image</button><button class="dialog-tab" type="button" data-product-tab="url">Paste product URL</button><button class="dialog-tab" type="button" data-product-tab="manual">Enter manually</button></div>
+      <form class="dialog-form" data-product-form><div class="upload-box" data-product-panel="upload"><span class="upload-icon">↑</span><strong>Drop a product image here</strong><small>PNG, JPG, or WEBP · up to 10MB</small><button class="button button-outline" type="button">Choose file</button></div><div class="product-url-panel" data-product-panel="url" hidden><label class="field"><span>Product listing URL</span><input type="url" placeholder="https://yourstore.com/product" /></label><div class="url-helper">We’ll use the page to suggest product details. You can edit everything before saving.</div></div><div class="manual-product-panel" data-product-panel="manual" hidden></div><div class="field-grid"><label class="field"><span>Product name <b>*</b></span><input name="product-name" value="Crompton Classic DLX" required /></label><label class="field"><span>Product price</span><input value="₹3,499" /></label></div><label class="field"><span>Short description</span><textarea rows="3">High-performance ceiling fan with a premium metallic finish and powerful air delivery.</textarea></label><label class="field"><span>Primary CTA</span><input value="Shop now" /></label><div class="dialog-footer"><button class="button button-ghost" type="button" data-close-dialog>Cancel</button><button class="button button-dark" type="submit">Save product <span aria-hidden="true">→</span></button></div></form>
+    </dialog>
+
+    <dialog class="modal-dialog sheet-dialog" id="actor-dialog" aria-labelledby="actor-dialog-title">
+      <div class="dialog-header"><div><p class="section-kicker">Synthetic talent library</p><h2 id="actor-dialog-title">Find your AI creator.</h2><p>All profiles are synthetic actors designed for commercial creative.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close AI creator dialog">×</button></div>
+      <div class="actor-filters"><label class="search-field"><span>⌕</span><input type="search" placeholder="Search by name, language, or style" aria-label="Search AI creators" /></label><select class="select-control"><option>Any language</option><option>Hindi</option><option>Indian English</option><option>Marathi</option></select><select class="select-control"><option>Any style</option><option>Relatable</option><option>Premium</option><option>Energetic</option></select></div>
+      <div class="actor-grid" id="actor-dialog-grid"></div><div class="dialog-footer"><button class="button button-ghost" type="button" data-close-dialog>Cancel</button><button class="button button-dark" type="button" data-action="select-actor">Use selected creator <span aria-hidden="true">→</span></button></div>
+    </dialog>
+
+    <dialog class="modal-dialog compact-dialog" id="upgrade-dialog" aria-labelledby="upgrade-dialog-title"><div class="dialog-header"><div><p class="section-kicker">Subscription</p><h2 id="upgrade-dialog-title">Keep your creative momentum.</h2><p>Choose a plan that gives your team enough room to test, learn, and scale.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close upgrade dialog">×</button></div><div class="upgrade-current"><span class="plan-badge">Current plan</span><strong>Growth · ₹17,000 / month</strong><span>38 of 60 credits used · renews 18 Oct 2026</span></div><div class="upgrade-options"><label class="upgrade-option"><input type="radio" name="upgrade-plan" /><span><strong>Pro</strong><small>90 credits · ₹24,000 / month</small></span><b>Choose</b></label><label class="upgrade-option"><input type="radio" name="upgrade-plan" /><span><strong>Enterprise</strong><small>400+ videos · custom pricing</small></span><b>Talk to us</b></label></div><div class="dialog-footer"><button class="button button-ghost" type="button" data-close-dialog>Not now</button><button class="button button-dark" type="button" data-toast="Plan changes are simulated in this prototype." data-close-dialog>Continue <span aria-hidden="true">→</span></button></div></dialog>
+
+    <dialog class="modal-dialog compact-dialog" id="share-dialog" aria-labelledby="share-dialog-title"><div class="dialog-header"><div><p class="section-kicker">Share campaign</p><h2 id="share-dialog-title">Bring someone into the review.</h2><p>Share a read-only preview with your team or client.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close share dialog">×</button></div><div class="share-link-box"><span>studio.hiveminds.in/review/crompton-dlx</span><button class="button button-outline" type="button" data-toast="Review link copied.">Copy link</button></div><div class="share-permission"><span class="permission-icon">◌</span><div><strong>Anyone with the link</strong><small>Can view generated videos and campaign details</small></div><span class="chevron">⌄</span></div><div class="dialog-footer"><button class="button button-ghost" type="button" data-close-dialog>Cancel</button><button class="button button-dark" type="button" data-toast="Review link shared." data-close-dialog>Share link <span aria-hidden="true">→</span></button></div></dialog>
+
+    <dialog class="modal-dialog compact-dialog" id="export-dialog" aria-labelledby="export-dialog-title"><div class="dialog-header"><div><p class="section-kicker">Export campaign</p><h2 id="export-dialog-title">Your files are ready.</h2><p>Download the selected variations and their accompanying metadata.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close export dialog">×</button></div><div class="export-list"><div><span class="file-icon">MP4</span><p><strong>Crompton Classic DLX — v1</strong><small>1080 × 1920 · 8.4 sec · Hindi</small></p><span class="file-ready">Ready</span></div><div><span class="file-icon">MP4</span><p><strong>Crompton Classic DLX — v2</strong><small>1080 × 1920 · 8.6 sec · Hindi</small></p><span class="file-ready">Ready</span></div><div><span class="file-icon">JSON</span><p><strong>Provenance metadata</strong><small>AI disclosure · prompt version · provider run</small></p><span class="file-ready">Ready</span></div></div><div class="dialog-footer"><button class="button button-ghost" type="button" data-close-dialog>Cancel</button><button class="button button-dark" type="button" data-toast="Your export download has started." data-close-dialog>Download all <span aria-hidden="true">↓</span></button></div></dialog>
+
+    <dialog class="modal-dialog compact-dialog" id="references-dialog" aria-labelledby="references-dialog-title"><div class="dialog-header"><div><p class="section-kicker">Creative references</p><h2 id="references-dialog-title">Show us what good looks like.</h2><p>Paste a link or attach a reference. These are creative cues, not instructions to copy.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close references dialog">×</button></div><label class="field"><span>Reference URL</span><input type="url" placeholder="https://instagram.com/reel/..." /></label><div class="reference-added"><span>✓</span><p><strong>2 references attached</strong><small>Sample product demo · Festive living room moodboard</small></p></div><div class="dialog-footer"><button class="button button-ghost" type="button" data-close-dialog>Cancel</button><button class="button button-dark" type="button" data-toast="Reference added to your brief." data-close-dialog>Save references <span aria-hidden="true">→</span></button></div></dialog>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
