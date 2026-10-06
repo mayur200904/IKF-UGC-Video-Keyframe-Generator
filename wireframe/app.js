@@ -79,12 +79,12 @@ const fixture = {
     { name: 'Everyday Glow', category: 'Beauty & wellness', price: '₹899', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=700&q=85', description: 'A gentle daily skincare routine for busy mornings.' }
   ],
   actors: [
-    { id: 'aisha', name: 'Aisha Mehta', city: 'Mumbai, India', fit: '4.9', tags: ['Hindi', 'Relatable'], image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=85' },
-    { id: 'rohan', name: 'Rohan Kapoor', city: 'Delhi, India', fit: '4.8', tags: ['Hinglish', 'Energetic'], image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=85' },
-    { id: 'meera', name: 'Meera Shah', city: 'Pune, India', fit: '4.9', tags: ['Marathi', 'Premium'], image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=85' },
-    { id: 'vikram', name: 'Vikram Rao', city: 'Bengaluru, India', fit: '4.7', tags: ['English', 'Conversational'], image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=85' },
-    { id: 'tara', name: 'Tara Singh', city: 'Chandigarh, India', fit: '4.8', tags: ['Punjabi', 'Warm'], image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=500&q=85' },
-    { id: 'arjun', name: 'Arjun Nair', city: 'Kochi, India', fit: '4.7', tags: ['Malayalam', 'Premium'], image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=85' }
+    { id: 'aisha', name: 'Aisha Mehta', city: 'Mumbai, India', nationality: 'Indian', fit: '4.9', tags: ['Hindi', 'Relatable'], image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=85' },
+    { id: 'rohan', name: 'Rohan Kapoor', city: 'Delhi, India', nationality: 'Indian', fit: '4.8', tags: ['Hinglish', 'Energetic'], image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=85' },
+    { id: 'meera', name: 'Meera Shah', city: 'Pune, India', nationality: 'Indian', fit: '4.9', tags: ['Marathi', 'Premium'], image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=85' },
+    { id: 'vikram', name: 'Vikram Rao', city: 'Bengaluru, India', nationality: 'Indian', fit: '4.7', tags: ['Kannada', 'Conversational'], image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=85' },
+    { id: 'tara', name: 'Tara Singh', city: 'Chandigarh, India', nationality: 'Indian', fit: '4.8', tags: ['Punjabi', 'Warm'], image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=500&q=85' },
+    { id: 'arjun', name: 'Arjun Nair', city: 'Kochi, India', nationality: 'Indian', fit: '4.7', tags: ['Malayalam', 'Premium'], image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=85' }
   ],
   concepts: [
     { title: 'The fan that changes the room', hook: '“Why does this room suddenly feel better?”', script: 'Aisha walks into the room, turns on the Classic DLX, and lets the change speak for itself. Warm, unforced, and rooted in a real home moment.', duration: '9 sec', fit: 'High fit', format: 'POV product experience' },
@@ -183,14 +183,14 @@ function renderProductLibrary() {
 function renderCreatorLibrary() {
   const target = $('#creator-library-grid');
   if (!target) return;
-  target.innerHTML = fixture.actors.slice(0, 6).map((actor) => `<article class="creator-library-card"><div class="creator-library-image"><img src="${actor.image}" alt="${escapeHtml(actor.name)} synthetic actor portrait" /></div><div class="creator-library-copy"><div class="tag-row"><h3>${escapeHtml(actor.name)}</h3><span class="badge badge-yellow">${actor.fit} fit</span></div><p>${escapeHtml(actor.city)} · Synthetic actor</p><div class="creator-tags">${actor.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div></div></article>`).join('');
+  target.innerHTML = fixture.actors.slice(0, 6).map((actor) => `<article class="creator-library-card"><div class="creator-library-image"><img src="${actor.image}" alt="${escapeHtml(actor.name)} Indian synthetic creator portrait" /></div><div class="creator-library-copy"><div class="tag-row"><h3>${escapeHtml(actor.name)}</h3><span class="badge badge-yellow">${actor.fit} fit</span></div><p>${escapeHtml(actor.city)} · ${escapeHtml(actor.nationality)} synthetic creator</p><div class="creator-tags"><span>India-first roster</span>${actor.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div></div></article>`).join('');
   $$('.creator-library-card img').forEach(imageFallback);
 }
 
 function renderActorDialog() {
   const target = $('#actor-dialog-grid');
   if (!target) return;
-  target.innerHTML = fixture.actors.map((actor, index) => `<button class="actor-card ${index === state.selectedActor ? 'selected' : ''}" type="button" data-actor-id="${actor.id}"><img src="${actor.image}" alt="${escapeHtml(actor.name)} synthetic actor portrait" /><span class="actor-selected-mark">✓</span><div class="actor-card-copy"><h3>${escapeHtml(actor.name)}</h3><p>${escapeHtml(actor.city)} · Fit score ${actor.fit}</p><div class="creator-tags">${actor.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div></div></button>`).join('');
+  target.innerHTML = fixture.actors.map((actor, index) => `<button class="actor-card ${index === state.selectedActor ? 'selected' : ''}" type="button" data-actor-id="${actor.id}"><img src="${actor.image}" alt="${escapeHtml(actor.name)} Indian synthetic creator portrait" /><span class="actor-selected-mark">✓</span><div class="actor-card-copy"><h3>${escapeHtml(actor.name)}</h3><p>${escapeHtml(actor.city)} · ${escapeHtml(actor.nationality)} creator · Fit score ${actor.fit}</p><div class="creator-tags"><span>India</span>${actor.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div></div></button>`).join('');
   $$('.actor-card img').forEach(imageFallback);
 }
 
@@ -221,10 +221,10 @@ function updateActorSelection() {
   const name = $('.creator-selected .creator-copy h3');
   const description = $('.creator-selected .creator-copy p');
   const tags = $('.creator-selected .creator-tags');
-  if (portrait) { portrait.src = actor.image; portrait.alt = `${actor.name} AI creator`; imageFallback(portrait); }
+  if (portrait) { portrait.src = actor.image; portrait.alt = `${actor.name} Indian AI creator`; imageFallback(portrait); }
   if (name) name.textContent = actor.name;
-  if (description) description.textContent = `${actor.tags[0]} voice direction, ${actor.tags[1].toLowerCase()} on camera.`;
-  if (tags) tags.innerHTML = `${actor.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}<span>${escapeHtml(actor.city)}</span>`;
+  if (description) description.textContent = `${actor.tags[0]} voice direction, ${actor.tags[1].toLowerCase()} on camera, India-first roster.`;
+  if (tags) tags.innerHTML = `<span>Indian synthetic actor</span>${actor.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}<span>${escapeHtml(actor.city)}</span>`;
 }
 
 function renderDetailView() {
