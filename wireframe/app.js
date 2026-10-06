@@ -79,12 +79,12 @@ const fixture = {
     { name: 'Everyday Glow', category: 'Beauty & wellness', price: '₹899', image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=700&q=85', description: 'A gentle daily skincare routine for busy mornings.' }
   ],
   actors: [
-    { id: 'aisha', name: 'Aisha Mehta', city: 'Mumbai, India', nationality: 'Indian', fit: '4.9', tags: ['Hindi', 'Relatable'], image: 'https://randomuser.me/api/portraits/women/28.jpg' },
-    { id: 'rohan', name: 'Rohan Kapoor', city: 'Delhi, India', nationality: 'Indian', fit: '4.8', tags: ['Hinglish', 'Energetic'], image: 'https://randomuser.me/api/portraits/women/43.jpg' },
-    { id: 'meera', name: 'Meera Shah', city: 'Pune, India', nationality: 'Indian', fit: '4.9', tags: ['Marathi', 'Premium'], image: 'https://randomuser.me/api/portraits/women/86.jpg' },
-    { id: 'vikram', name: 'Vikram Rao', city: 'Bengaluru, India', nationality: 'Indian', fit: '4.7', tags: ['Kannada', 'Conversational'], image: 'https://randomuser.me/api/portraits/men/33.jpg' },
-    { id: 'tara', name: 'Tara Singh', city: 'Chandigarh, India', nationality: 'Indian', fit: '4.8', tags: ['Punjabi', 'Warm'], image: 'https://randomuser.me/api/portraits/men/66.jpg' },
-    { id: 'arjun', name: 'Arjun Nair', city: 'Kochi, India', nationality: 'Indian', fit: '4.7', tags: ['Malayalam', 'Premium'], image: 'https://randomuser.me/api/portraits/men/39.jpg' }
+    { id: 'aisha', name: 'Aisha Mehta', city: 'Mumbai, India', nationality: 'Indian', fit: '4.9', tags: ['Hindi', 'Relatable'], image: 'assets/creator-aisha.png' },
+    { id: 'rohan', name: 'Rohan Kapoor', city: 'Delhi, India', nationality: 'Indian', fit: '4.8', tags: ['Hinglish', 'Energetic'], image: 'assets/creator-rohan.png' },
+    { id: 'meera', name: 'Meera Shah', city: 'Pune, India', nationality: 'Indian', fit: '4.9', tags: ['Marathi', 'Premium'], image: 'assets/creator-meera.png' },
+    { id: 'vikram', name: 'Vikram Rao', city: 'Bengaluru, India', nationality: 'Indian', fit: '4.7', tags: ['Kannada', 'Conversational'], image: 'assets/creator-vikram.png' },
+    { id: 'tara', name: 'Tara Singh', city: 'Chandigarh, India', nationality: 'Indian', fit: '4.8', tags: ['Punjabi', 'Warm'], image: 'assets/creator-tara.png' },
+    { id: 'arjun', name: 'Arjun Nair', city: 'Kochi, India', nationality: 'Indian', fit: '4.7', tags: ['Malayalam', 'Premium'], image: 'assets/creator-arjun.png' }
   ],
   concepts: [
     { title: 'The fan that changes the room', hook: '“Why does this room suddenly feel better?”', script: 'Aisha walks into the room, turns on the Classic DLX, and lets the change speak for itself. Warm, unforced, and rooted in a real home moment.', duration: '9 sec', fit: 'High fit', format: 'POV product experience' },
