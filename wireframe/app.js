@@ -1,4 +1,9 @@
 const fixture = {
+  workspaces: [
+    { id: 'growth-lab', name: "Mayur's Growth Lab", initials: 'M', type: 'Personal workspace', summary: '24 campaigns · Growth plan', avatarClass: 'avatar-blue' },
+    { id: 'hiveminds-client', name: 'HiveMinds Client Lab', initials: 'H', type: 'Client workspace', summary: '8 campaigns · Shared with team', avatarClass: 'avatar-yellow' },
+    { id: 'india-launch', name: 'India Launch Studio', initials: 'I', type: 'Campaign workspace', summary: '12 campaigns · India-first', avatarClass: 'avatar-lilac' }
+  ],
   campaigns: [
     {
       id: 'crompton-dlx',
@@ -101,6 +106,7 @@ const fixture = {
 
 const state = {
   view: 'dashboard',
+  workspaceId: 'growth-lab',
   step: 1,
   selectedCampaignId: 'crompton-dlx',
   campaignFilter: 'all',
@@ -124,6 +130,46 @@ function imageFallback(image) {
     image.removeAttribute('src');
     image.classList.add('image-failed');
   }, { once: true });
+}
+
+function renderWorkspaceMenu() {
+  const menu = $('#workspace-menu');
+  if (!menu) return;
+  menu.innerHTML = `${fixture.workspaces.map((workspace) => `<button class="workspace-option" type="button" role="option" data-workspace-option="${workspace.id}" aria-selected="${workspace.id === state.workspaceId}"><span class="avatar ${workspace.avatarClass}">${escapeHtml(workspace.initials)}</span><span class="workspace-option-copy"><strong>${escapeHtml(workspace.name)}</strong><small>${escapeHtml(workspace.type)} · ${escapeHtml(workspace.summary)}</small></span>${workspace.id === state.workspaceId ? '<span class="workspace-check" aria-hidden="true">✓</span>' : ''}</button>`).join('')}<span class="workspace-menu-divider" role="separator"></span><button class="workspace-create" type="button" data-workspace-create><span aria-hidden="true">＋</span><span><strong>Create workspace</strong><small>Set up a new team space</small></span></button>`;
+  updateWorkspaceUI();
+}
+
+function updateWorkspaceUI() {
+  const workspace = fixture.workspaces.find((item) => item.id === state.workspaceId) || fixture.workspaces[0];
+  const avatar = $('[data-workspace-avatar]');
+  const name = $('[data-workspace-name]');
+  if (avatar) { avatar.className = `avatar ${workspace.avatarClass}`; avatar.textContent = workspace.initials; }
+  if (name) name.textContent = workspace.name;
+  $$('#workspace-menu [data-workspace-option]').forEach((option) => {
+    const selected = option.dataset.workspaceOption === workspace.id;
+    option.setAttribute('aria-selected', String(selected));
+    const check = $('.workspace-check', option);
+    if (selected && !check) option.insertAdjacentHTML('beforeend', '<span class="workspace-check" aria-hidden="true">✓</span>');
+    if (!selected && check) check.remove();
+  });
+}
+
+function closeWorkspaceMenu() {
+  const menu = $('#workspace-menu');
+  const trigger = $('[data-workspace-trigger]');
+  if (!menu || !trigger) return;
+  menu.hidden = true;
+  trigger.setAttribute('aria-expanded', 'false');
+}
+
+function toggleWorkspaceMenu() {
+  const menu = $('#workspace-menu');
+  const trigger = $('[data-workspace-trigger]');
+  if (!menu || !trigger) return;
+  const willOpen = menu.hidden;
+  menu.hidden = !willOpen;
+  trigger.setAttribute('aria-expanded', String(willOpen));
+  if (willOpen) $('.workspace-option[aria-selected="true"]', menu)?.focus();
 }
 
 function campaignStatusClass(status) {
@@ -347,6 +393,32 @@ function handleRouteFromHash() {
 }
 
 document.addEventListener('click', (event) => {
+  const workspaceTrigger = event.target.closest('[data-workspace-trigger]');
+  if (workspaceTrigger) {
+    event.preventDefault();
+    toggleWorkspaceMenu();
+    return;
+  }
+
+  const workspaceOption = event.target.closest('[data-workspace-option]');
+  if (workspaceOption) {
+    state.workspaceId = workspaceOption.dataset.workspaceOption;
+    updateWorkspaceUI();
+    closeWorkspaceMenu();
+    const workspace = fixture.workspaces.find((item) => item.id === state.workspaceId);
+    showToast(`Switched to ${workspace.name}. Workspace data is simulated in this wireframe.`);
+    return;
+  }
+
+  const workspaceCreate = event.target.closest('[data-workspace-create]');
+  if (workspaceCreate) {
+    closeWorkspaceMenu();
+    showToast('Workspace creation is simulated in this prototype.');
+    return;
+  }
+
+  if (!event.target.closest('.workspace-selector')) closeWorkspaceMenu();
+
   const routeTrigger = event.target.closest('[data-route]');
   if (routeTrigger) {
     event.preventDefault();
@@ -458,7 +530,20 @@ $$('dialog').forEach((dialog) => {
 });
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') { const openDialogElement = $('dialog[open]'); if (openDialogElement) closeDialog(openDialogElement); }
+  if (event.key === 'Escape') {
+    const openDialogElement = $('dialog[open]');
+    if (openDialogElement) closeDialog(openDialogElement);
+    else closeWorkspaceMenu();
+  }
+  const menu = $('#workspace-menu');
+  if (!menu || menu.hidden) return;
+  const options = $$('[data-workspace-option]', menu);
+  const current = options.indexOf(document.activeElement);
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    event.preventDefault();
+    const next = event.key === 'ArrowDown' ? (current + 1) % options.length : (current - 1 + options.length) % options.length;
+    options[next]?.focus();
+  }
 });
 
 $$('[data-product-form]').forEach((form) => form.addEventListener('submit', (event) => {
@@ -477,4 +562,5 @@ renderConcepts();
 renderStoryboard();
 renderProductLibrary();
 renderCreatorLibrary();
+renderWorkspaceMenu();
 handleRouteFromHash();

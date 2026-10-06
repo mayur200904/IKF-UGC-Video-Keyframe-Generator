@@ -28,13 +28,16 @@
           <button class="icon-button sidebar-close" type="button" data-sidebar-close aria-label="Close navigation">×</button>
         </div>
 
-        <div class="workspace-switcher">
-          <div class="avatar avatar-blue">M</div>
-          <div class="workspace-copy">
-            <span class="eyebrow">Workspace</span>
-            <strong>Mayur's Growth Lab</strong>
-          </div>
-          <span class="chevron" aria-hidden="true">⌄</span>
+        <div class="workspace-selector">
+          <button class="workspace-switcher" type="button" data-workspace-trigger aria-haspopup="listbox" aria-expanded="false" aria-controls="workspace-menu">
+            <span class="avatar avatar-blue" data-workspace-avatar>M</span>
+            <span class="workspace-copy">
+              <span class="eyebrow">Workspace</span>
+              <strong data-workspace-name>Mayur's Growth Lab</strong>
+            </span>
+            <span class="chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="workspace-menu" id="workspace-menu" role="listbox" aria-label="Choose workspace" hidden></div>
         </div>
 
         <nav class="nav-group" aria-label="Workspace">
