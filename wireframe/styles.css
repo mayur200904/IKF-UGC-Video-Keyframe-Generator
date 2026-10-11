@@ -183,6 +183,18 @@ img { display: block; max-width: 100%; }
     max-height: none;
     overflow: visible;
   }
+
+  .view-section[data-view-section="new-video"] .generator-layout {
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+  }
+
+  .view-section[data-view-section="new-video"] .wizard-panel,
+  .view-section[data-view-section="new-video"] .wizard-panel-inner,
+  .view-section[data-view-section="new-video"] .mode-ribbon,
+  .view-section[data-view-section="new-video"] .wizard-footer {
+    min-width: 0;
+  }
 }
 
 /* Make the overview mode switch read like a clear starting decision. */
@@ -248,4 +260,112 @@ img { display: block; max-width: 100%; }
 @media (max-width: 600px) {
   .mode-dialog-options { padding-right: 18px; padding-left: 18px; }
   .mode-dialog-option { grid-template-columns: 34px minmax(0,1fr) auto; padding: 12px; }
+}
+
+/* Small-phone pass: keep dense controls readable from 320px upward. */
+@media (max-width: 480px) {
+  h1 { font-size: clamp(31px, 10vw, 38px); line-height: 1.06; }
+  h2 { font-size: 19px; }
+  .topbar { gap: 8px; }
+  .topbar-actions { gap: 5px; }
+  .breadcrumbs { min-width: 0; gap: 7px; font-size: 11px; }
+  .breadcrumbs span:first-child { overflow: hidden; max-width: 65px; text-overflow: ellipsis; white-space: nowrap; }
+  .page-wrap { padding: 24px 12px 48px; }
+  .page-heading { margin-bottom: 24px; }
+  .heading-copy { font-size: 14px; }
+
+  .mode-launcher { gap: 13px; margin-bottom: 20px; padding: 14px; }
+  .mode-launcher-copy p:last-child { font-size: 10px; }
+  .mode-tab { min-height: 0; padding: 11px; }
+  .mode-tab-check { margin-left: 2px; padding: 3px 4px; font-size: 8px; }
+  .mode-cta { flex-direction: column; align-items: stretch; gap: 10px; }
+  .mode-cta-copy { text-align: left; }
+  .mode-cta .button { width: 100%; }
+
+  .metric-grid { grid-template-columns: 1fr; gap: 10px; }
+  .metric-card { min-height: 122px; }
+  .metric-top { margin-bottom: 13px; }
+
+  .panel-header { align-items: flex-start; gap: 10px; }
+  .panel-header > .button { flex: 0 0 auto; }
+  .video-row { grid-template-columns: 42px minmax(0, 1fr) 30px; gap: 9px; }
+  .video-main strong { font-size: 12px; }
+  .video-main span { font-size: 9px; }
+
+  .wizard-header { align-items: flex-start; flex-direction: column; gap: 14px; }
+  .wizard-header-actions { width: 100%; justify-content: space-between; }
+  .wizard-header-actions .button { min-height: 36px; }
+  .wizard-footer { align-items: stretch; flex-direction: column; gap: 10px; }
+  .wizard-footer > .button { width: 100%; }
+  .wizard-footer > div { width: 100%; justify-content: space-between; }
+  .wizard-footer > div .button { flex: 1; }
+  .wizard-page-indicator { white-space: nowrap; }
+  .selected-actor-card > div { min-width: 0; }
+  .mode-ribbon { align-items: flex-start; }
+  .ribbon-estimate { margin-left: auto; white-space: nowrap; }
+  .preview-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .preview-meta > :last-child { grid-column: 1 / -1; }
+
+  .settings-row { gap: 12px; }
+  .settings-row > div { min-width: 0; }
+  .settings-row small { max-width: 225px; }
+
+  .dialog-header { gap: 12px; }
+  .dialog-header h2 { font-size: 21px; }
+  .dialog-header p:last-child { font-size: 10px; }
+  .mode-dialog-option { grid-template-columns: 32px minmax(0, 1fr) 16px; gap: 9px; }
+  .mode-dialog-option > span:nth-child(2) { min-width: 0; }
+  .mode-dialog-option small { overflow-wrap: anywhere; }
+  .upload-inline { align-items: flex-start; flex-wrap: wrap; }
+  .upload-inline div { min-width: calc(100% - 49px); }
+  .upload-inline .button { width: 100%; margin-left: 39px; }
+  .share-link-box { align-items: stretch; flex-direction: column; }
+  .share-link-box .button { width: 100%; }
+}
+
+@media (max-width: 360px) {
+  .topbar { padding-right: 10px; padding-left: 10px; }
+  .mobile-menu { margin-right: 4px; }
+  .breadcrumbs span:first-child { max-width: 48px; }
+  .topbar-avatar { width: 29px; height: 29px; flex-basis: 29px; }
+  .mode-tab { display: grid; grid-template-columns: 29px minmax(0, 1fr); align-items: start; gap: 8px; }
+  .mode-tab-copy { display: block; }
+  .mode-tab-check { grid-column: 2; justify-self: start; margin: 1px 0 0; }
+  .mode-tab-icon { grid-row: 1 / span 2; }
+  .metric-card { min-height: 116px; }
+  .wizard-header-actions { gap: 7px; }
+  .wizard-header-actions .button { padding-right: 11px; padding-left: 11px; font-size: 11px; }
+  .wizard-footer > div { align-items: stretch; flex-direction: column; gap: 8px; }
+  .wizard-page-indicator { text-align: center; }
+  .dialog-footer .button { min-width: 0; padding-right: 11px; padding-left: 11px; }
+}
+
+/* Tablets need a usable editing column; move the preview below it instead of squeezing three columns. */
+@media (min-width: 851px) and (max-width: 1100px) {
+  .view-section[data-view-section="new-video"].active {
+    display: block;
+    height: auto;
+    min-height: 0;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-layout {
+    height: auto;
+    grid-template-columns: 180px minmax(0, 1fr);
+    align-items: start;
+    overflow: visible;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-main {
+    height: auto;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-preview {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
 }
