@@ -1,4 +1,4 @@
-# Hiveminds Studio Wireframe
+# stonepaperstudio Video Wireframe
 
 This directory is a static HTML prototype. It has no database connection, API calls, credentials, or private media dependencies.
 
