@@ -99,3 +99,116 @@ img { display: block; max-width: 100%; }
 .placement-copy strong, .placement-copy small { display: block; }
 .placement-copy strong { font-size: 11px; }
 .placement-copy small { min-height: 33px; margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+
+/* Keep the generator rail visible while the active input panel scrolls independently. */
+@media (min-width: 851px) {
+  .view-section[data-view-section="new-video"].active {
+    display: flex;
+    min-height: 0;
+    height: calc(100vh - 190px);
+    flex-direction: column;
+  }
+
+  .view-section[data-view-section="new-video"] .wizard-header {
+    flex: 0 0 auto;
+    margin-bottom: 14px;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-layout {
+    min-height: 0;
+    height: 100%;
+    flex: 1 1 auto;
+    grid-template-columns: 206px minmax(0, 1fr) minmax(250px, 300px);
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-main,
+  .view-section[data-view-section="new-video"] .generator-preview {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .view-section[data-view-section="new-video"] .wizard-rail {
+    position: static;
+    align-self: stretch;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-main {
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 4px;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-preview {
+    position: static;
+    align-self: stretch;
+    height: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (min-width: 851px) and (max-width: 1100px) {
+  .view-section[data-view-section="new-video"] .generator-layout {
+    grid-template-columns: 180px minmax(0, 1fr) 250px;
+    gap: 10px;
+  }
+
+  .view-section[data-view-section="new-video"] .wizard-panel {
+    padding: 18px;
+  }
+
+  .view-section[data-view-section="new-video"] .preview-phone {
+    height: 320px;
+  }
+}
+
+@media (max-width: 850px) {
+  .view-section[data-view-section="new-video"].active {
+    display: block;
+    height: auto;
+    min-height: 0;
+  }
+
+  .view-section[data-view-section="new-video"] .generator-layout,
+  .view-section[data-view-section="new-video"] .generator-main,
+  .view-section[data-view-section="new-video"] .generator-preview {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* Make the overview mode switch read like a clear starting decision. */
+.dashboard-grid .plan-panel { display: none; }
+.dashboard-side-column { align-content: start; }
+.mode-launcher-copy p:last-child { max-width: 360px; }
+.mode-tab { position: relative; align-items: flex-start; min-height: 86px; padding: 13px 12px; }
+.mode-tab-copy { min-width: 0; flex: 1; }
+.mode-tab-copy strong, .mode-tab-copy small, .mode-tab-copy em { display: block; }
+.mode-tab-copy small { margin-top: 4px; color: var(--ink-soft); font-size: 10px; line-height: 1.35; }
+.mode-tab-copy em { margin-top: 5px; color: var(--muted); font-size: 9px; font-style: normal; line-height: 1.35; }
+.mode-tab-check { position: absolute; top: 10px; right: 10px; color: var(--muted-light); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+.mode-tab.active .mode-tab-check { color: var(--blue); }
+.mode-cta-copy { display: flex; flex-direction: column; gap: 3px; text-align: right; }
+.mode-cta-copy strong { color: var(--ink); font-size: 11px; }
+.mode-cta-copy small { color: var(--muted); font-size: 9px; }
+
+@media (max-width: 1180px) {
+  .mode-launcher { grid-template-columns: 1fr 1.35fr; align-items: stretch; }
+  .mode-cta { grid-column: 1 / -1; align-items: center; flex-direction: row; justify-content: space-between; padding-top: 2px; }
+  .mode-cta-copy { text-align: left; }
+}
+
+@media (max-width: 600px) {
+  .mode-launcher { grid-template-columns: 1fr; }
+  .mode-cta { grid-column: auto; align-items: stretch; flex-direction: row; }
+  .mode-cta-copy { text-align: left; }
+  .mode-tab { min-height: 78px; }
+}

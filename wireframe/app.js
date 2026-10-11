@@ -170,7 +170,9 @@ function syncModeLauncher() {
     }
   });
   const estimate = $('#mode-estimate');
-  if (estimate) estimate.textContent = modeEstimate(state.mode);
+  if (estimate) estimate.textContent = `${modeEstimate(state.mode)} · 7 guided steps`;
+  const startLabel = $('#mode-start-label');
+  if (startLabel) startLabel.textContent = state.mode === 'likeness' ? 'Start with your likeness' : 'Start with an AI actor';
 }
 
 function flowSteps() {
