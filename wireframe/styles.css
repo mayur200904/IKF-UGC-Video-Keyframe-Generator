@@ -212,3 +212,40 @@ img { display: block; max-width: 100%; }
   .mode-cta-copy { text-align: left; }
   .mode-tab { min-height: 78px; }
 }
+
+/* Keep selection status in its own compact badge so it cannot cover the mode copy. */
+.mode-tab-check { position: static; flex: 0 0 auto; margin-left: 4px; padding: 3px 5px; border-radius: 4px; background: rgba(39,71,216,.07); line-height: 1; }
+.mode-tab.active .mode-tab-check { color: var(--blue); background: rgba(39,71,216,.12); }
+
+/* A person silhouette keeps the actor navigation cue distinct from status icons. */
+.nav-link[data-route="creators"] .nav-icon { position: relative; width: 19px; height: 17px; font-size: 0; }
+.nav-link[data-route="creators"] .nav-icon::before { content: ""; position: absolute; top: 1px; left: 6px; width: 7px; height: 7px; border: 1.5px solid currentColor; border-radius: 50%; }
+.nav-link[data-route="creators"] .nav-icon::after { content: ""; position: absolute; bottom: 1px; left: 3px; width: 13px; height: 7px; border: 1.5px solid currentColor; border-bottom: 0; border-radius: 9px 9px 0 0; }
+
+/* Profile actions stay attached to the fixed sidebar. */
+.profile-menu { position: absolute; right: 16px; bottom: 68px; left: 16px; z-index: 70; padding: 8px; border: 1px solid rgba(255,255,255,.16); border-radius: 12px; color: #fff; background: #1a318d; box-shadow: 0 18px 34px rgba(4,13,54,.32); }
+.profile-menu[hidden] { display: none; }
+.profile-menu-heading { display: flex; flex-direction: column; gap: 2px; padding: 7px 9px 9px; border-bottom: 1px solid rgba(255,255,255,.13); }
+.profile-menu-heading strong { font-size: 11px; }
+.profile-menu-heading span { color: rgba(255,255,255,.58); font-size: 9px; }
+.profile-menu button { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 5px; padding: 9px; border: 0; border-radius: 8px; color: #fff; background: transparent; text-align: left; font-size: 11px; font-weight: 700; }
+.profile-menu button:hover, .profile-menu button:focus-visible { background: rgba(244,201,40,.14); }
+.profile-menu button span { color: var(--yellow); font-size: 15px; }
+
+/* Repeat the video-type choice from the overview Create video action. */
+.mode-dialog { width: min(590px, calc(100% - 30px)); }
+.mode-dialog-options { display: grid; gap: 10px; padding: 0 27px; }
+.mode-dialog-option { display: grid; grid-template-columns: 38px minmax(0,1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 14px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: #fff; text-align: left; }
+.mode-dialog-option:hover, .mode-dialog-option:focus-visible { border-color: var(--blue); background: var(--surface-blue); }
+.mode-dialog-icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 9px; color: var(--blue); background: #e4ebff; font-size: 19px; }
+.mode-dialog-icon-yellow { color: var(--blue-deep); background: var(--yellow); }
+.mode-dialog-option strong, .mode-dialog-option small { display: block; }
+.mode-dialog-option strong { font-size: 12px; }
+.mode-dialog-option small { margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.mode-dialog-option > span:last-child { color: var(--blue); font-size: 18px; }
+.mode-dialog .dialog-footer { margin-top: 16px; }
+
+@media (max-width: 600px) {
+  .mode-dialog-options { padding-right: 18px; padding-left: 18px; }
+  .mode-dialog-option { grid-template-columns: 34px minmax(0,1fr) auto; padding: 12px; }
+}

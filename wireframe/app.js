@@ -141,6 +141,23 @@ function closeWorkspaceMenu() {
   if (trigger) trigger.setAttribute('aria-expanded', 'false');
 }
 
+function toggleProfileMenu() {
+  const menu = $('#profile-menu');
+  const trigger = $('[data-profile-trigger]');
+  if (!menu || !trigger) return;
+  const isOpen = !menu.hidden;
+  menu.hidden = isOpen;
+  trigger.setAttribute('aria-expanded', String(!isOpen));
+  if (!isOpen) menu.querySelector('[data-logout]')?.focus();
+}
+
+function closeProfileMenu() {
+  const menu = $('#profile-menu');
+  const trigger = $('[data-profile-trigger]');
+  if (menu) menu.hidden = true;
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+}
+
 function modeLabel(mode) { return mode === 'likeness' ? 'Your likeness' : 'AI actor'; }
 function modeEstimate(mode) { return mode === 'likeness' ? 'About 4 minutes' : 'About 2 minutes'; }
 
@@ -323,7 +340,7 @@ function renderDetailView() {
 }
 
 function routeLabel(route) {
-  return ({ dashboard: 'Overview', videos: 'Videos', products: 'Products', creators: 'AI actors', assets: 'Asset library', subscription: 'Subscription', settings: 'Settings', 'new-video': 'New video', 'video-detail': 'Video detail' })[route] || 'Overview';
+  return ({ dashboard: 'Overview', videos: 'Videos', products: 'Products', creators: 'AI actors', assets: 'Asset library', subscription: 'Usages', settings: 'Settings', 'new-video': 'New video', 'video-detail': 'Video detail' })[route] || 'Overview';
 }
 
 function showView(route) {
@@ -333,6 +350,14 @@ function showView(route) {
   $$('.nav-link').forEach((link) => link.classList.toggle('active', link.dataset.route === activeRoute));
   const breadcrumbs = $('#breadcrumbs');
   if (breadcrumbs) breadcrumbs.innerHTML = `<span>Workspace</span><span aria-hidden="true">/</span><strong>${routeLabel(route)}</strong>`;
+  if (route === 'subscription') {
+    const usageSection = $('[data-view-section="subscription"]');
+    if (usageSection) {
+      usageSection.querySelector('.kicker').textContent = 'Video usage';
+      usageSection.querySelector('h1').textContent = 'Usages.';
+      usageSection.querySelector('.heading-copy').textContent = 'Track credits, generation volume, and plan options for your workspace.';
+    }
+  }
   syncModeLauncher();
   if (route === 'dashboard' || route === 'videos') renderVideos();
   if (route === 'products') renderProductLibrary();
@@ -442,17 +467,26 @@ function handleRouteFromHash() {
 }
 
 document.addEventListener('click', (event) => {
+  const profileTrigger = event.target.closest('[data-profile-trigger]');
+  if (profileTrigger) { event.preventDefault(); closeWorkspaceMenu(); toggleProfileMenu(); return; }
+  const logoutTrigger = event.target.closest('[data-logout]');
+  if (logoutTrigger) { closeProfileMenu(); showToast('You have been logged out of this demo.'); return; }
+
   const workspaceTrigger = event.target.closest('[data-workspace-trigger]');
-  if (workspaceTrigger) { event.preventDefault(); toggleWorkspaceMenu(); return; }
+  if (workspaceTrigger) { event.preventDefault(); closeProfileMenu(); toggleWorkspaceMenu(); return; }
   const workspaceOption = event.target.closest('[data-workspace-option]');
   if (workspaceOption) { state.workspaceId = workspaceOption.dataset.workspaceOption; updateWorkspaceUI(); closeWorkspaceMenu(); showToast(`Switched to ${fixture.workspaces.find((item) => item.id === state.workspaceId).name}.`); return; }
 
   const modeTrigger = event.target.closest('[data-mode-choice]');
-  if (modeTrigger) { setMode(modeTrigger.dataset.modeChoice); }
+  if (modeTrigger) {
+    setMode(modeTrigger.dataset.modeChoice);
+    if (modeTrigger.hasAttribute('data-start-video')) { closeDialog($('#video-mode-dialog')); navigate('new-video'); return; }
+  }
 
   const routeTrigger = event.target.closest('[data-route]');
   if (routeTrigger) {
     event.preventDefault();
+    if (routeTrigger.dataset.route === 'new-video' && routeTrigger.querySelector('.button-plus')) { openDialog('video-mode-dialog'); return; }
     const actorId = routeTrigger.dataset.actorId;
     if (actorId) { state.flow.actorId = actorId; state.flow.voice = `${selectedActor().name} · ${state.flow.language}`; }
     navigate(routeTrigger.dataset.route);
@@ -521,7 +555,7 @@ document.addEventListener('change', (event) => {
 });
 
 document.addEventListener('submit', (event) => { if (event.target.id === 'product-form') { event.preventDefault(); handleProductSubmit(event.target); } });
-document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeWorkspaceMenu(); });
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeWorkspaceMenu(); closeProfileMenu(); } });
 $$('dialog').forEach((dialog) => dialog.addEventListener('click', (event) => { if (event.target === dialog) closeDialog(dialog); }));
 window.addEventListener('hashchange', handleRouteFromHash);
 
